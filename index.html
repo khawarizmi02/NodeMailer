@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Email Sender</title>
+</head>
+
+<body>
+	<form id="emailForm">
+		<label for="name">Name:</label>
+		<input type="text" id="name" name="name" required><br><br>
+
+		<label for="email">Email:</label>
+		<input type="email" id="email" name="email" required><br><br>
+
+		<label for="subject">Subject:</label>
+		<input type="text" id="subject" name="subject"><br><br>
+
+		<label for="message">Message:</label><br>
+		<textarea id="message" name="message" rows="5" required></textarea><br><br>
+
+		<button type="submit">Send Email</button>
+	</form>
+
+	<script>
+		const form = document.getElementById('emailForm');
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			const data = {
+				name: form.name.value,
+				email: form.email.value,
+				subject: form.subject.value,
+				message: form.message.value,
+			};
+
+			try {
+				const response = await fetch('http://localhost:3000/send-email', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+				});
+
+				const result = await response.json();
+				alert(result.message);
+			} catch (error) {
+				console.error('Error:', error);
+				alert('Failed to send email');
+			}
+		});
+	</script>
+</body>
+
+</html>
